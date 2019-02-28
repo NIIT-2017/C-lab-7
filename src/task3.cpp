@@ -15,8 +15,10 @@ SYM * MakingTableOfFrequencies(SYM * syms, const char * fileName)
 	int freq[256] = { 0 };		//creating array for frequencies of symbols
 	int totalNumberOfSymb = 0;	//total number of symbols in the document for counting frequencies
 	char chTemp = 0;
-	while ((chTemp = (char)fgetc(fp)) != -1)
+	while (1)
 	{
+		chTemp = (char)fgetc(fp);
+		if (feof(fp)) break;
 		for (int i = 0; i < 256; i++)
 		{
 			if (chTemp == syms[i].ch)// if this symbol is in our array
