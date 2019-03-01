@@ -10,9 +10,9 @@ int main (int argc, char *argv[])
     int tempCh = 0;                            // в эту переменную читается информация из файла
     int count = 0;                             // счётчик количества уникальных символов
     int globalCount = 0;                       // счётчтк количества всех символов в файле
-    int kolvo[256] = {0};                      // инициализируем массив количества уникальных символов
-    SYM symbols[256] = {0};                    // инициализируем массив структур типа SYM
-    SYM *psym[256] = {0};                      // инициализируем массив указателей на структуры типа SYM
+    int quantity[256] = {0};                   // инициализируем массив количества уникальных символов
+    struct SYM symbols[256] = {0};             // инициализируем массив структур типа SYM
+    struct SYM *psym[256] = {0};               // инициализируем массив указателей на структуры типа SYM
     float sumFreq = 0;                         // сумма частот встречаемости
 
 
@@ -35,14 +35,14 @@ int main (int argc, char *argv[])
         {
             if (tempCh == symbols[j].ch)
             {
-                kolvo[j]++;
+                quantity[j]++;
                 globalCount++;
                 break;
             }
             if (symbols[j].ch == 0)
             {
                 symbols[j].ch=(unsigned char)tempCh;
-                kolvo[j]=1;
+                quantity[j]=1;
                 count++; globalCount++;
                 break;
             }
@@ -51,13 +51,13 @@ int main (int argc, char *argv[])
 
 
     for(int i = 0; i < count; i++)                          // определяем частоты встречаемости
-        symbols[i].freq=(float)kolvo[i]/globalCount;
+        symbols[i].freq=(float)quantity[i]/globalCount;
 
     for(int i = 0; i<count; i++)                            // в массив указателей заносим адреса структур
         psym[i] = &symbols[i];
 
 
-    SYM sort;                                              // сортировка по убыванию
+    struct SYM sort;                                        // сортировка по убыванию
     for(int i = 1; i < count; i++)
         for(int j = 0; j < count-1; j++)
             if(symbols[j].freq<symbols[j+1].freq)
