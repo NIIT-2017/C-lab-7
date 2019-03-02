@@ -1,52 +1,56 @@
 #include "task3.h"
 #define _CRT_SECURE_NO_WARNINGS 
+#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
-int countUniqSymb = 0;//total number of unique symbols in the document 
 
-SYM * MakingTableOfFrequencies(SYM * syms, const char * fileName)
+SYM * MakingTableOfFrequencies(SYM * syms, const char * fileName, int * pcountUniqSymb)
 {
-	FILE * fp = fopen(fileName, "r");
+	FILE * fp = fopen(fileName, "rb");				//checking file for reading
 	if (!fp)
 	{
-		puts("Error reading file");
+		puts("Cannot read original file");
 		exit(-1);
 	}
-	int freq[256] = { 0 };		//creating array for frequencies of symbols
-	int totalNumberOfSymb = 0;	//total number of symbols in the document for counting frequencies
-	char chTemp = 0;
-	while (1)
-	{
-		chTemp = (char)fgetc(fp);
-		if (feof(fp)) break;
-		for (int i = 0; i < 256; i++)
-		{
-			if (chTemp == syms[i].ch)// if this symbol is in our array
-			{
-				freq[i]++;//increasing it's frequency
-				totalNumberOfSymb++;//increasing total amount of symbols
-				break;//exit because each symbol is in one exemplar int the array
-			}
-			if (syms[i].ch == 0)//finding structure with free symbol field
-			{
-				syms[i].ch = chTemp;//giving the meaning of symbol to this symbol field
-				freq[i] = 1;//increasing it's freaquency by one
-				totalNumberOfSymb++;//increasing total amount of symbols
-				countUniqSymb++;//increasing total amount of uniq symbols
-				break;//exit because each symbol is in one exemplar int the array
-			}
-		}//from for
-	}//from while
 
-	for (int i = 0; i < countUniqSymb; i++)//counting frequencies
-		syms[i].freq = (float)freq[i]/ totalNumberOfSymb;
-	fclose(fp);
+	int freq[256] = { 0 };							//creating array for frequencies of symbols
+	int totalNumberOfSymb = 0;						//total number of symbols in the document for counting frequencies
+	int chTemp = 0;
+	while ((chTemp = fgetc(fp)) != EOF)//forming array with frequencies, where index is a ASCII code of the element
+	{
+		for (int i = 0; i < SIZE1; i++)
+			if (chTemp == i)
+			{
+				freq[i] += 1;
+				totalNumberOfSymb++;
+				break;
+			}
+	}
+
+	for (int i = 0; i < SIZE1; i++)//counting unique symbols
+	{
+		if (0 != freq[i])
+			*pcountUniqSymb += 1;
+	}
+
+	for (int i = 0, j = 0; i < SIZE1; i++, j++)//counting frequencies and forming array of structures
+	{
+		if (freq[i])
+		{
+			syms[j].freq = (float)freq[i]; // totalNumberOfSymb;
+			syms[j].ch = i;
+		}
+		else
+			j--;
+	}
+	fclose(fp);//closing initial file
 	return syms;
 }
 
-SYM * SortingArrByFrequencies (SYM * syms)
+SYM * SortingArrByFrequencies(SYM * syms, int countUniqSymb)
 {
-	SYM tempSym;//sorting an array from less to more
+	SYM tempSym;									//sorting the array from more to less
 	for (int i = 0; i < countUniqSymb; i++)
 	{
 		for (int j = 0; j < countUniqSymb - 1; j++)
@@ -67,7 +71,7 @@ void PrintSym(SYM a)
 	printf("%c - symbol, %d - by ASCII, %f - frequency\n", a.ch, a.ch, a.freq);
 }
 
-void PrintTableWithFrequencies(SYM * syms)
+void PrintTableWithFrequencies(SYM * syms, int countUniqSymb)
 {
 	for (int i = 0; i < countUniqSymb; i++)//printing the table
 	{

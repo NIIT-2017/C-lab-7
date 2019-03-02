@@ -8,12 +8,11 @@ int main(int argc, const char * argv[]) {
 		return -7;
 	}
 
-	SYM syms[256] = { 0 };		//creating array of structures
+	SYM syms[SIZE1] = { 0 };		//creating array of structures
+	int countUniqSymb = 0;			//total number of unique symbols in the document 
 
-	MakingTableOfFrequencies(syms, argv[1]);
-
-	//creating the table of frequencies
-	SortingArrByFrequencies(syms);
-	PrintTableWithFrequencies(syms);
+	MakingTableOfFrequencies(syms, argv[1], &countUniqSymb);
+	SortingArrByFrequencies(syms, countUniqSymb);
+	PrintTableWithFrequencies(syms, countUniqSymb);
 	return 0;
 }
