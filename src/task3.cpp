@@ -21,6 +21,7 @@ void initData(TSYM data[SIZE])
         data[i].frequency = (float)(data[i].count) / total;
         data[i].ch = i;
     }
+    fclose(fp);
 }
 
 void sortData(TSYM data[SIZE])
