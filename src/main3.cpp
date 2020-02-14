@@ -3,27 +3,15 @@
 #include <stdlib.h>
 #include "task3.h"
 
-int main()
+int main(int argc, char* argv[])
 {
 	struct SYM data[LEN];
 	char words[MAX_LEN];
 	FILE* f;
-	f = fopen("test.txt", "r");
+	f = fopen(argv[1], "r");
 	int count = 0; 
 	int i,j;
 	int ns = 0; 
-	while (fgets(words, 256, f) != NULL)
-	{
-		chomp(words);
-		i = 0;
-		while (words[i])
-		{
-			count++;
-			i++;
-		}
-	}
-	printf("Number of characters in the file = %d\n", count);
-	rewind(f); 
 	struct SYM * node;
 	int found;
 
@@ -33,6 +21,7 @@ int main()
 		i = 0;
 		while (words[i])
 		{
+			count++;
 			found = 0;
 			for (j = 0; j < ns; j++)
 			{
