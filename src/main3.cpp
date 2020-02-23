@@ -27,6 +27,7 @@ int main() {
     }
     qsort(table, 256, sizeof(SYM), cmp);
     printTable(table);
-  
+    fclose(fp);
+
     return 0;
 }
