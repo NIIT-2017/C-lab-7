@@ -59,8 +59,8 @@ int countList(PITEM head) {
 PITEM findByRegion(PITEM head, char* reg) {
 	while (head) {
 		if (strcmpi(head->name_rec->reg, reg) == 0) {
-			printItem(head);
-			//return head;
+			//printItem(head);
+			return head;
 		}
 		head = head->next;
 	}

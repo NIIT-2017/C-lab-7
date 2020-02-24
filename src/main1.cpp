@@ -48,7 +48,10 @@ int main() {
 		printf("\n");
 	}
 
-	item = findByRegion(head, (char*)"RU");
+	while(item = findByRegion(head, (char*)"RU")) {
+		printItem(item);
+		head = item->next;
+	}
 	printf("\n");
 
 	return 0;
